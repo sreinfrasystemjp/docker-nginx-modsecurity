@@ -1,5 +1,5 @@
 # docker-nginx-modsecurity
-docker nginx with modsecurity, njs, geoip2, lua
+docker nginx with modsecurity, njs, geoip2, lua, dynamic_upstream
 
 ## Usage
 
@@ -20,6 +20,7 @@ curl http://localhost:10080/
 |GDPR mask ip address|nginx njs|https://www.nginx.com/blog/data-masking-user-privacy-nginscript/ |
 |Get country code before mask ip address|nginx geoip2||
 |Get distributed unique ID|nginx lua ( and [katsubushi](https://github.com/kayac/go-katsubushi) )|https://speakerdeck.com/fujiwara3/katsubushi?slide=56 |
+|Blue-Green Deployment|nginx dynamic_upstream|https://qiita.com/cubicdaiya/items/09023ca6ed056d3d1ed2 |
 
 
 ## Library's Version
@@ -38,7 +39,7 @@ curl http://localhost:10080/
 |simplresty/ngx_devel_kit|0.3.1rc1|https://github.com/simplresty/ngx_devel_kit/ ||
 |openresty/luajit2|2.0.5|https://github.com/openresty/luajit2/ ||
 |openresty/lua-nginx-module|0.10.13|https://github.com/openresty/lua-nginx-module/ ||
-
+|cubicdaiya/ngx_dynamic_upstream|0.1.6|https://github.com/cubicdaiya/ngx_dynamic_upstream ||
 
 ## nginx with modsecurity
 
@@ -69,11 +70,11 @@ git clone https://github.com/sreinfrasystemjp/docker-nginx-modsecurity.git
 cd docker-nginx-modsecurity
 ```
 
-* log_format : see [conf.d.mask_ip.geoip2.lua/default.conf](conf.d.mask_ip.geoip2.lua/default.conf)
+* log_format : see [conf.d.mask_ip.geoip2.lua.dynamic_upstream/default.conf](conf.d.mask_ip.geoip2.lua.dynamic_upstream/default.conf)
     ```
     log_format  masked
         '$request_id $remote_addr_masked '
-        '$geoip2_country_code $geoip2_country_name ...';
+        '$geoip2_country_code $geoip2_country_name $upstream_addr ...';
     log_format  nomask
         '$request_id $remote_addr_masked  $remote_addr';
 
@@ -85,7 +86,7 @@ cd docker-nginx-modsecurity
 docker run --rm \
   -p 10080:80 \
   -v $(pwd)/log:/var/log/nginx \
-  -v $(pwd)/conf.d.mask_ip.geoip2.lua:/etc/nginx/conf.d \
+  -v $(pwd)/conf.d.mask_ip.geoip2.lua.dynamic_upstream:/etc/nginx/conf.d \
   sreinfrasystemjp/docker-nginx-modsecurity
 
 # njs : $remote_addr_masked : https://www.nginx.com/blog/data-masking-user-privacy-nginscript/
@@ -161,10 +162,58 @@ http://localhost:10080/ca.der
 and install ca.der into your browser
 
 * chrome
-jp : https://jp.globalsign.com/support/faq/558.html
+    * jp : https://jp.globalsign.com/support/faq/558.html
 
 * firefox
-jp : https://jp.globalsign.com/support/faq/559.html
+    * jp : https://jp.globalsign.com/support/faq/559.html
+
+
+## nginx with dynamic_upstream
+
+```
+docker run --rm \
+  --name nginx_dynamic \
+  -p 10080:80 \
+  -p 10081:81 \
+  -p 10082:82 \
+  -p 10443:443 \
+  -v $(pwd)/log:/var/log/nginx \
+  sreinfrasystemjp/docker-nginx-modsecurity
+
+# download ca.der
+curl -O http://localhost:10080/ca.der
+
+# install ca.der into your browser
+
+# edit your /etc/hosts
+127.0.0.1       localhost dynamic.docker.test
+
+# browser direct access (blue)
+http://dynamic.docker.test:10081/
+# browser direct access (green)
+http://dynamic.docker.test:10082/
+
+# browser access (blue)
+https://dynamic.docker.test:10443/
+
+# change blue(127.0.0.1:81) -> green(127.0.0.1:82)
+docker exec -it nginx_dynamic /bin/bash
+    curl "http://127.0.0.1/dynamic?upstream=zoneapp"
+
+    curl "http://127.0.0.1/dynamic?upstream=zoneapp&server=127.0.0.1:82&up="
+    curl "http://127.0.0.1/dynamic?upstream=zoneapp&server=127.0.0.1:81&down="
+    cd /etc/nginx/conf
+    ln -sf upstream.app.green.conf upstream.app.conf
+    ls -al upstream.app.*
+
+    curl "http://127.0.0.1/dynamic?upstream=zoneapp"
+
+# browser access (green)
+https://dynamic.docker.test:10443/
+
+# check log $upstream_addr
+tail log/access.log
+```
 
 
 ## Licence
@@ -190,7 +239,7 @@ This product includes GeoLite2 data created by MaxMind, available from [https://
     |simplresty/ngx_devel_kit|BSD 3-Clause|https://github.com/simplresty/ngx_devel_kit/blob/master/LICENSE ||
     |openresty/luajit2|MIT,etc|https://github.com/openresty/luajit2/blob/v2.1-agentzh/COPYRIGHT ||
     |openresty/lua-nginx-module|BSD|https://github.com/openresty/lua-nginx-module#copyright-and-license ||
-
+    |cubicdaiya/ngx_dynamic_upstream|BSD like|https://github.com/cubicdaiya/ngx_dynamic_upstream/blob/master/LICENSE ||
 
 ## Author
 

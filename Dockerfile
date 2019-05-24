@@ -12,6 +12,7 @@ ENV NGX_NDK_VERSION 0.3.1rc1
 ENV LUAJIT_VERSION 2.0.5
 #ENV NGX_LUA_VERSION 0.10.15
 ENV NGX_LUA_VERSION 0.10.13
+ENV NGX_DYNAMIC_UPSTREAM_VERSION 0.1.6
 ENV NGINX_VERSION 1.17.0
 
 
@@ -123,6 +124,12 @@ RUN cd /opt && \
     tar xzf lua-nginx-module-${NGX_LUA_VERSION}.tar.gz && \
     rm -f lua-nginx-module-${NGX_LUA_VERSION}.tar.gz
 
+# ngx_dynamic_upstream
+RUN cd /opt && \
+    wget -q -O ngx_dynamic_upstream-${NGX_DYNAMIC_UPSTREAM_VERSION}.tar.gz https://github.com/cubicdaiya/ngx_dynamic_upstream/archive/v${NGX_DYNAMIC_UPSTREAM_VERSION}.tar.gz && \
+    tar xzf ngx_dynamic_upstream-${NGX_DYNAMIC_UPSTREAM_VERSION}.tar.gz && \
+    rm -f ngx_dynamic_upstream-${NGX_DYNAMIC_UPSTREAM_VERSION}.tar.gz
+
 # nginx
 RUN cd /opt && \
     wget -q https://nginx.org/download/nginx-"$NGINX_VERSION".tar.gz && \
@@ -168,6 +175,7 @@ RUN cd /opt/nginx-"$NGINX_VERSION" && \
       --add-dynamic-module=/opt/ngx_http_geoip2_module-${NGX_GEOIP2_VERSION} \
       --add-dynamic-module=/opt/ngx_devel_kit-${NGX_NDK_VERSION} \
       --add-dynamic-module=/opt/lua-nginx-module-${NGX_LUA_VERSION} \
+      --add-dynamic-module=/opt/ngx_dynamic_upstream-${NGX_DYNAMIC_UPSTREAM_VERSION} \
     && \
     make && \
     make install && \
