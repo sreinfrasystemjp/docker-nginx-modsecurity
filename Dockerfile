@@ -72,7 +72,7 @@ RUN strip /usr/local/modsecurity/bin/* /usr/local/modsecurity/lib/*.a /usr/local
 RUN cd /opt && \
     wget -q https://github.com/SpiderLabs/ModSecurity-nginx/releases/download/${NGX_MODSECURITY_VERSION}/modsecurity-nginx-${NGX_MODSECURITY_VERSION}.tar.gz && \
     tar xzf modsecurity-nginx-${NGX_MODSECURITY_VERSION}.tar.gz && \
-    rm -f modsecurity-nginx-${NGX_MODSECURITY_VERSION}.tar.gz.tar.gz
+    rm -f modsecurity-nginx-${NGX_MODSECURITY_VERSION}.tar.gz
 
 # owasp-modsecurity-crs
 RUN cd /opt && \

@@ -70,7 +70,7 @@ git clone https://github.com/sreinfrasystemjp/docker-nginx-modsecurity.git
 cd docker-nginx-modsecurity
 ```
 
-* log_format : see [conf.d.mask_ip.geoip2.lua.dynamic_upstream/default.conf](conf.d.mask_ip.geoip2.lua.dynamic_upstream/default.conf)
+* log_format : see [conf.d.mask_ip.geoip2.lua.dynamic_upstream/default.conf](https://github.com/sreinfrasystemjp/conf.d.mask_ip.geoip2.lua.dynamic_upstream/default.conf)
     ```
     log_format  masked
         '$request_id $remote_addr_masked '
@@ -224,22 +224,22 @@ This product includes GeoLite2 data created by MaxMind, available from [https://
 
 * Library's License
 
-    |production|license|license url|note|
-    |---|---|---|---|
-    |docker|Apache License 2.0|https://github.com/moby/moby/blob/master/LICENSE ||
-    |ubuntu|GPL,etc|https://www.ubuntu.com/licensing ||
-    |nginx|BSD like|https://github.com/nginx/nginx/blob/master/docs/text/LICENSE ||
-    |nginx/njs|BSD like|https://github.com/nginx/njs/blob/master/LICENSE ||
-    |SpiderLabs/ModSecurity|Apache License 2.0|https://github.com/SpiderLabs/ModSecurity/blob/v3/master/LICENSE ||
-    |SpiderLabs/ModSecurity-nginx|Apache License 2.0|https://github.com/SpiderLabs/ModSecurity-nginx/blob/master/LICENSE ||
-    |SpiderLabs/owasp-modsecurity-crs|Apache License 2.0|https://github.com/SpiderLabs/owasp-modsecurity-crs/blob/master/LICENSE ||
-    |libmaxminddb|Apache License 2.0|https://github.com/maxmind/libmaxminddb/blob/master/LICENSE ||
-    |leev/ngx_http_geoip2_module|BSD 2-Clause|https://github.com/leev/ngx_http_geoip2_module/blob/master/LICENSE ||
-    |MaxMind GeoLite2 data|CC BY-SA 4.0|https://dev.maxmind.com/geoip/geoip2/geolite2/ ||
-    |simplresty/ngx_devel_kit|BSD 3-Clause|https://github.com/simplresty/ngx_devel_kit/blob/master/LICENSE ||
-    |openresty/luajit2|MIT,etc|https://github.com/openresty/luajit2/blob/v2.1-agentzh/COPYRIGHT ||
-    |openresty/lua-nginx-module|BSD|https://github.com/openresty/lua-nginx-module#copyright-and-license ||
-    |cubicdaiya/ngx_dynamic_upstream|BSD like|https://github.com/cubicdaiya/ngx_dynamic_upstream/blob/master/LICENSE ||
+|production|license|license url|note|
+|---|---|---|---|
+|docker|Apache-2.0|https://github.com/moby/moby/blob/master/LICENSE ||
+|ubuntu|GPL,etc|https://www.ubuntu.com/licensing ||
+|nginx|BSD like|https://github.com/nginx/nginx/blob/master/docs/text/LICENSE ||
+|nginx/njs|BSD like|https://github.com/nginx/njs/blob/master/LICENSE ||
+|SpiderLabs/ModSecurity|Apache-2.0|https://github.com/SpiderLabs/ModSecurity/blob/v3/master/LICENSE ||
+|SpiderLabs/ModSecurity-nginx|Apache-2.0|https://github.com/SpiderLabs/ModSecurity-nginx/blob/master/LICENSE ||
+|SpiderLabs/owasp-modsecurity-crs|Apache-2.0|https://github.com/SpiderLabs/owasp-modsecurity-crs/blob/master/LICENSE ||
+|libmaxminddb|Apache-2.0|https://github.com/maxmind/libmaxminddb/blob/master/LICENSE ||
+|leev/ngx_http_geoip2_module|BSD 2-Clause|https://github.com/leev/ngx_http_geoip2_module/blob/master/LICENSE ||
+|MaxMind GeoLite2 data|CC BY-SA 4.0|https://dev.maxmind.com/geoip/geoip2/geolite2/ ||
+|simplresty/ngx_devel_kit|BSD 3-Clause|https://github.com/simplresty/ngx_devel_kit/blob/master/LICENSE ||
+|openresty/luajit2|MIT,etc|https://github.com/openresty/luajit2/blob/v2.1-agentzh/COPYRIGHT ||
+|openresty/lua-nginx-module|BSD|https://github.com/openresty/lua-nginx-module#copyright-and-license ||
+|cubicdaiya/ngx_dynamic_upstream|BSD like|https://github.com/cubicdaiya/ngx_dynamic_upstream/blob/master/LICENSE ||
 
 ## Author
 
